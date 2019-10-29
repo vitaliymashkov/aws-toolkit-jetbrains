@@ -68,6 +68,7 @@ tasks.withType(prepareSandbox.class).all {
 compileKotlin.dependsOn(generateModel)
 
 tasks.findByName("compileTestKotlin").onlyIf { resolveIdeProfileName() != "2019.2" /* Tests require 2019.3 to build and run */ }
+tasks.findByName("compileIntegrationTestKotlin").onlyIf { resolveIdeProfileName() != "2019.2" /* Tests require 2019.3 to build and run */ }
 test {
     useTestNG()
 
@@ -86,18 +87,4 @@ runIde {
 
 jar {
     archiveBaseName.set('aws-intellij-toolkit-rider')
-}
-
-private static String[] getBackendProjectsOut(File resharperPluginDir, String buildConfiguration) {
-    def pluginFiles = [
-        "AWS.Daemon/bin/$buildConfiguration/net461/AWS.Daemon",
-        "AWS.Localization/bin/$buildConfiguration/net461/AWS.Localization",
-        "AWS.Psi/bin/$buildConfiguration/net461/AWS.Psi",
-        "AWS.Settings/bin/$buildConfiguration/net461/AWS.Settings"
-    ]
-
-    def files = pluginFiles.collect { "$resharperPluginDir/src/${it}.dll" } +
-        pluginFiles.collect { "$resharperPluginDir/src/${it}.pdb" }
-
-    return files
 }
