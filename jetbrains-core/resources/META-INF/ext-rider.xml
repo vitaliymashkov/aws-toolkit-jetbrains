@@ -5,7 +5,7 @@
 
     <project-components>
         <component>
-            <implementation-class>software.aws.toolkits.jetbrains.services.lambda.LambdaHost</implementation-class>
+            <implementation-class>software.aws.toolkits.jetbrains.services.lambda.LambdaDaemonHost</implementation-class>
         </component>
         <component>
             <implementation-class>software.aws.toolkits.jetbrains.services.lambda.LambdaPsiHost</implementation-class>
@@ -28,5 +28,17 @@
         <sam.debugSupport runtimeGroup="DOTNET" implementation="software.aws.toolkits.jetbrains.services.lambda.dotnet.DotNetSamDebugSupport"/>
         <sam.projectWizard runtimeGroup="DOTNET" implementation="software.aws.toolkits.jetbrains.services.lambda.dotnet.DotNetSamProjectWizard"/>
     </extensions>
+
+    <!-- This is copied here because in non-rider SolutionExplorerPopupMenu isn't a group so it gets added to the default group -->
+    <actions>
+        <group id="aws.toolkit.serverless.template">
+            <add-to-group group-id="SolutionExplorerPopupMenu" anchor="last"/>
+
+            <separator/>
+            <action id="serverless.application.deploy"
+                    class="software.aws.toolkits.jetbrains.services.lambda.actions.DeployServerlessApplicationAction"/>
+            <separator/>
+        </group>
+    </actions>
 
 </idea-plugin>

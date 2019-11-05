@@ -33,7 +33,11 @@ allprojects {
     }
 
     apply plugin: "com.adarshr.test-logger"
+    apply plugin: 'java'
     apply plugin: 'jacoco'
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 
     tasks.withType(JavaExec) {
         systemProperty("aws.toolkits.enableTelemetry", false)
@@ -157,9 +161,6 @@ subprojects {
         mustRunAfter tasks.test
     }
 
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-
     tasks.withType(KotlinCompile).all {
         kotlinOptions.jvmTarget = "1.8"
     }
@@ -211,9 +212,11 @@ intellij {
 }
 
 prepareSandbox {
-    from(tasks.getByPath(":jetbrains-rider:buildReSharperPlugin"), {
-        into("${intellij.pluginName}/dotnet")
-    })
+    tasks.findByPath(":jetbrains-rider:buildReSharperPlugin")?.collect {
+        from(it, {
+            into("${intellij.pluginName}/dotnet")
+        })
+    }
 }
 
 publishPlugin {
@@ -297,7 +300,9 @@ task guiTest(type: Test) {
 
 dependencies {
     compile project(':jetbrains-ultimate')
-    compile project(':jetbrains-rider')
+    project.findProject(':jetbrains-rider')?.collect {
+        compile it
+    }
 
     ktlint "com.pinterest:ktlint:$ktlintVersion"
     ktlint project(":ktlint-rules")
