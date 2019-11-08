@@ -13,7 +13,8 @@ task downloadResources(type: Download) {
     dest "$buildDir/downloaded-resources/software/aws/toolkits/resources/"
 
     src([
-        "https://aws-toolkit-endpoints.s3.amazonaws.com/endpoints.json"
+        // "https://aws-toolkit-endpoints.s3.amazonaws.com/endpoints.json"
+        "https://raw.githubusercontent.com/aws/aws-sdk-net/master/sdk/src/Core/endpoints.json"
     ])
 
     onlyIfModified true

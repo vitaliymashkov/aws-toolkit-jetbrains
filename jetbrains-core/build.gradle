@@ -45,6 +45,9 @@ dependencies {
     compile(project(":core")) {
         exclude group: 'org.slf4j'
     }
+    compile("software.amazon.awssdk:sfn:$awsSdkVersion") {
+        exclude group: 'org.slf4j'
+    }
     compile("software.amazon.awssdk:s3:$awsSdkVersion") {
         exclude group: 'org.slf4j'
     }
